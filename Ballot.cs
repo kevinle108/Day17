@@ -47,40 +47,10 @@ namespace Day17
         public void DisplayCurrentCandidate()
         {
             Console.WriteLine($"\n{CurrentContest.Name} - {CurrentContest.CurrentCandidate.DisplayText()}");
-        }
+        }       
 
-        public void FirstCandidates()
-        {
-            Console.WriteLine("Printing First Candidates:");
-            foreach (var contest in Contests)
-            {
-                foreach (var candidate in contest.Candidates)
-                {
-                    if (candidate.IsFirstCandidate)
-                    {
-                        Console.WriteLine("  " + candidate.DisplayText());
-                    }
-                }
-            }
-            Console.WriteLine();
-        }
-        public void LastCandidates()
-        {
-            Console.WriteLine("Printing Last Candidates:");
-            foreach (var contest in Contests)
-            {
-                foreach (var candidate in contest.Candidates)
-                {
-                    if (candidate.IsLastCandidate)
-                    {
-                        Console.WriteLine("  " + candidate.DisplayText());
-                    }
-                }
-            }
-            Console.WriteLine();
-        }
-
-        public void SetFirstLast()
+        // sets the all the current contest and candidate indexes to begin voting 
+        public void PrepForVoting()
         {
             CurrentContest = Contests[0];
             CurrentContestIndex = 0;

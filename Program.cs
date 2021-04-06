@@ -47,13 +47,11 @@ namespace Day17
             ballot.AddContest(contest);
             ballot.Output();
             Vote(ballot);
-            //ballot.FirstCandidates();
-            //ballot.LastCandidates();
         }
 
         static void Vote(Ballot ballot)
         {
-            ballot.SetFirstLast();
+            ballot.PrepForVoting();
             char userInput;
             bool done = false;
             do
