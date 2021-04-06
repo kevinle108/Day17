@@ -10,8 +10,9 @@ namespace Day17
         public string Code { get; private set; }
         public string Name { get; private set; }
         public string Party { get; private set; }
-
         public bool Selected { get; private set; }
+        public bool IsFirstCandidate { get; set; }
+        public bool IsLastCandidate { get; set; }
 
         public Candidate(string code, string name, string party)
         {
@@ -19,11 +20,13 @@ namespace Day17
             Name = name;
             Party = party;
             Selected = false;
+            IsFirstCandidate = false;
+            IsLastCandidate = false;
         }
 
-        public void Print()
+        public string DisplayText()
         {
-            string txt = $"    {Name}";
+            string txt = $"{Name}";
             if (!Name.Contains("Write-in:"))
             {
                 txt += $" ({Party})";
@@ -32,7 +35,7 @@ namespace Day17
             {
                 txt += $" -- Selected";
             }
-            Console.WriteLine(txt);
+            return txt;
         }
 
         public void ToggleSelection()

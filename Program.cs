@@ -45,9 +45,19 @@ namespace Day17
             contest.AddBlankWriteIns();
             ballot.AddContest(contest);
             ballot.Output();
-
-
+            Vote(ballot);
+            ballot.FirstCandidates();
+            ballot.LastCandidates();
         }
+
+        static void Vote(Ballot ballot)
+        {
+            ballot.SetFirstLast();
+            Console.WriteLine();
+            ballot.DisplayCurrentCandidate();
+        }
+        
+
     }
 
     

@@ -10,6 +10,9 @@ namespace Day17
         public string Name { get; private set; }
         public int VoteFor { get; private set; }
         public List<Candidate> Candidates { get; private set; }
+        public Candidate CurrentCandidate { get; private set; }
+        public bool IsFirstContest { get; set; }
+        public bool IsLastContest { get; set; }
 
         public Contest(string code, string name, int voteFor)
         {
@@ -17,6 +20,8 @@ namespace Day17
             Name = name;
             VoteFor = voteFor;
             Candidates = new List<Candidate>();
+            IsFirstContest = false;
+            IsLastContest = false;
         }
 
         public void AddCandidate(Candidate cand)
@@ -30,6 +35,9 @@ namespace Day17
             {
                 Candidates.Add(new Candidate($"Writein-{i}", "Write-in:", ""));
             }
+            CurrentCandidate = Candidates[0];
+            Candidates[0].IsFirstCandidate = true;
+            Candidates[Candidates.Count-1].IsLastCandidate = true;
         }
 
         public void Print()
@@ -37,7 +45,7 @@ namespace Day17
             Console.WriteLine(Name);
             foreach (Candidate cand in Candidates)
             {
-                cand.Print();               
+                Console.WriteLine(cand.DisplayText());                
             }
         }
 
