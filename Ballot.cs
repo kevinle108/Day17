@@ -94,28 +94,19 @@ namespace Day17
                 contest.Candidates[^1].IsLastCandidate = true;
             }
         }
-
-        //public void DisplayOptions(char[] options)
-        //{
-        //    Console.Write("Press a key -- ");
-        //    foreach (var item in options)
-        //    {
-        //        Console.Write(AllOptions.GetValueOrDefault(item) + " ");
-        //    }
-        //    Console.WriteLine();
-        //}
-
-
-        //0: Display Ballot
-        //2: Prev Contest
-        //4: Prev Candidate
-        //5: Select
-        //6: Next Candidate
-        //8: Next Contest
+        
         public List<char> DisplayOptions()
         {
             List<char> options = new List<char>() { '0', '2', '4', '5', '6', '8' };
             var optionsSet = new Dictionary<char, string>(AllOptions);
+            //0: Display Ballot
+            //2: Prev Contest
+            //4: Prev Candidate
+            //5: Select
+            //6: Next Candidate
+            //8: Next Contest
+
+            // remove any options not available to the situation
             if (CurrentContest.IsFirstContest)
             {
                 options.RemoveAll(x => x == '2');                
@@ -128,6 +119,8 @@ namespace Day17
             {
                 options.RemoveAll(x => x == '6');
             }
+
+            // modify any remaining options to the situation
             if (CurrentContest.IsLastContest)
             {
                 optionsSet['8'] = "8: Done";
@@ -136,12 +129,16 @@ namespace Day17
             {
                 optionsSet['5'] = "5: Deselect";
             }
+
+            // print the options
             Console.Write("Press a key -- ");
             foreach (var item in options)
             {
                 Console.Write(optionsSet.GetValueOrDefault(item) + "  ");
             }
             Console.WriteLine();
+
+            // return the list of valid options
             return options;
         }
 
