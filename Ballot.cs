@@ -115,6 +115,7 @@ namespace Day17
         public List<char> DisplayOptions()
         {
             List<char> options = new List<char>() { '0', '2', '4', '5', '6', '8' };
+            var optionsSet = new Dictionary<char, string>(AllOptions);
             if (CurrentContest.IsFirstContest)
             {
                 options.RemoveAll(x => x == '2');                
@@ -123,18 +124,20 @@ namespace Day17
             {
                 options.RemoveAll(x => x == '4');
             }
-            if (CurrentContest.IsLastContest)
-            {
-                options.RemoveAll(x => x == '8');
-            }
             if (CurrentContest.CurrentCandidate.IsLastCandidate)
             {
                 options.RemoveAll(x => x == '6');
             }
+            if (CurrentContest.IsLastContest)
+            {
+                //options.RemoveAll(x => x == '8');
+                optionsSet['8'] = "8: Done";
+            }
+
             Console.Write("Press a key -- ");
             foreach (var item in options)
             {
-                Console.Write(AllOptions.GetValueOrDefault(item) + "  ");
+                Console.Write(optionsSet.GetValueOrDefault(item) + "  ");
             }
             Console.WriteLine();
             return options;
@@ -146,6 +149,8 @@ namespace Day17
             {
                 CurrentContestIndex++;
                 CurrentContest = Contests[CurrentContestIndex];
+                CurrentContest.CurrentCandidateIndex = 0;
+                CurrentContest.CurrentCandidate = CurrentContest.Candidates[CurrentContest.CurrentCandidateIndex];
             }
         }
         
@@ -154,6 +159,26 @@ namespace Day17
             if (!CurrentContest.CurrentCandidate.IsLastCandidate)
             {
                 CurrentContest.CurrentCandidateIndex++;
+                CurrentContest.CurrentCandidate = Contests[CurrentContestIndex].Candidates[CurrentContest.CurrentCandidateIndex];
+            }
+        }
+
+        public void GoToPrevContest()
+        {
+            if (!CurrentContest.IsFirstContest)
+            {
+                CurrentContestIndex--;
+                CurrentContest = Contests[CurrentContestIndex];
+                CurrentContest.CurrentCandidateIndex = 0;
+                CurrentContest.CurrentCandidate = CurrentContest.Candidates[CurrentContest.CurrentCandidateIndex];
+            }
+        }
+
+        public void GoToPrevCandidate()
+        {
+            if (!CurrentContest.CurrentCandidate.IsFirstCandidate)
+            {
+                CurrentContest.CurrentCandidateIndex--;
                 CurrentContest.CurrentCandidate = Contests[CurrentContestIndex].Candidates[CurrentContest.CurrentCandidateIndex];
             }
         }

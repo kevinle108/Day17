@@ -62,16 +62,19 @@ namespace Day17
                 ballot.DisplayCurrentCandidate();
                 List<char> options = ballot.DisplayOptions();
                 userInput = Console.ReadKey(true).KeyChar;
+
+                // if user does not enter a valid option, set userInput to trigger default switch case
+                if (!options.Contains(userInput)) userInput = '!';
                 switch (userInput)
                 {
                     case '0':
                         ballot.Output();
                         break;
                     case '2':
-                        //ballot.GoToPrevContest();
+                        ballot.GoToPrevContest();
                         break;
                     case '4':
-                        //ballot.GoToPrevCandidate();
+                        ballot.GoToPrevCandidate();
                         break;
                     case '5':
                         //ballot.SelectCandidate();
@@ -80,9 +83,11 @@ namespace Day17
                         ballot.GoToNextCandidate();
                         break;
                     case '8':
+                        if (ballot.CurrentContest.IsLastContest) done = true;
                         ballot.GoToNextContest();
                         break;
                     default:
+                        Console.WriteLine("Invalid key!");
                         break;
                 }
             } while (!done);
