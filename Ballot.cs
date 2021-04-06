@@ -130,10 +130,12 @@ namespace Day17
             }
             if (CurrentContest.IsLastContest)
             {
-                //options.RemoveAll(x => x == '8');
                 optionsSet['8'] = "8: Done";
             }
-
+            if (CurrentContest.CurrentCandidate.Selected)
+            {
+                optionsSet['5'] = "5: Deselect";
+            }
             Console.Write("Press a key -- ");
             foreach (var item in options)
             {
@@ -194,10 +196,21 @@ namespace Day17
             if (CurrentContest.CurrentCandidate.Selected)
             {
                 CurrentContest.NumOfVotes++;
+                if (CurrentContest.CurrentCandidate.Name.Contains("Write-in:"))
+                {
+                    Console.Write("\nEnter the writein name: ");
+                    string writeinName = Console.ReadLine();
+                    CurrentContest.CurrentCandidate.Name = "Write-in: " + writeinName;
+                }
+
             }
             if (!CurrentContest.CurrentCandidate.Selected)
             {
                 CurrentContest.NumOfVotes--;
+                if (CurrentContest.CurrentCandidate.Name.Contains("Write-in:"))
+                {
+                    CurrentContest.CurrentCandidate.Name = "Write-in:";
+                }
             }
         }
         

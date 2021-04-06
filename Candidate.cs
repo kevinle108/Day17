@@ -8,7 +8,7 @@ namespace Day17
     {
 
         public string Code { get; private set; }
-        public string Name { get; private set; }
+        public string Name { get; set; }
         public string Party { get; private set; }
         public bool Selected { get; private set; }
         public bool IsFirstCandidate { get; set; }
