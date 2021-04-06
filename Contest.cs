@@ -10,7 +10,8 @@ namespace Day17
         public string Name { get; private set; }
         public int VoteFor { get; private set; }
         public List<Candidate> Candidates { get; private set; }
-        public Candidate CurrentCandidate { get; private set; }
+        public Candidate CurrentCandidate { get; set; }
+        public int CurrentCandidateIndex { get; set; }
         public bool IsFirstContest { get; set; }
         public bool IsLastContest { get; set; }
 

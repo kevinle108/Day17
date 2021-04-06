@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Day17
 {
@@ -46,15 +47,46 @@ namespace Day17
             ballot.AddContest(contest);
             ballot.Output();
             Vote(ballot);
-            ballot.FirstCandidates();
-            ballot.LastCandidates();
+            //ballot.FirstCandidates();
+            //ballot.LastCandidates();
         }
 
         static void Vote(Ballot ballot)
         {
             ballot.SetFirstLast();
-            Console.WriteLine();
-            ballot.DisplayCurrentCandidate();
+            Console.WriteLine();          
+            char userInput;
+            bool done = false;
+            do
+            {
+                ballot.DisplayCurrentCandidate();
+                List<char> options = ballot.DisplayOptions();
+                userInput = Console.ReadKey(true).KeyChar;
+                switch (userInput)
+                {
+                    case '0':
+                        ballot.Output();
+                        break;
+                    case '2':
+                        //ballot.GoToPrevContest();
+                        break;
+                    case '4':
+                        //ballot.GoToPrevCandidate();
+                        break;
+                    case '5':
+                        //ballot.SelectCandidate();
+                        break;
+                    case '6':
+                        ballot.GoToNextCandidate();
+                        break;
+                    case '8':
+                        ballot.GoToNextContest();
+                        break;
+                    default:
+                        break;
+                }
+            } while (!done);
+            Console.WriteLine("\n...Program ended!");
         }
         
 
