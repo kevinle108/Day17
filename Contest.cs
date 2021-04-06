@@ -14,6 +14,8 @@ namespace Day17
         public int CurrentCandidateIndex { get; set; }
         public bool IsFirstContest { get; set; }
         public bool IsLastContest { get; set; }
+        public int NumOfVotes { get; set; }
+
 
         public Contest(string code, string name, int voteFor)
         {
@@ -23,6 +25,7 @@ namespace Day17
             Candidates = new List<Candidate>();
             IsFirstContest = false;
             IsLastContest = false;
+            NumOfVotes = 0;
         }
 
         public void AddCandidate(Candidate cand)

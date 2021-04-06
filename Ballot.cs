@@ -36,7 +36,7 @@ namespace Day17
             Console.WriteLine("Demo Ballot");
             for (int i = 0; i < Contests.Count; i++)
             {
-                Console.WriteLine($"  Contest {i + 1} of {Contests.Count}: {Contests[i].Name}");
+                Console.WriteLine($"  Contest {i + 1} of {Contests.Count}: {Contests[i].Name} (Vote for {Contests[i].VoteFor})");
                 for (int j = 0; j < Contests[i].Candidates.Count; j++)
                 {
                     Console.WriteLine($"    {Contests[i].Candidates[j].DisplayText()}");
@@ -159,7 +159,7 @@ namespace Day17
             if (!CurrentContest.CurrentCandidate.IsLastCandidate)
             {
                 CurrentContest.CurrentCandidateIndex++;
-                CurrentContest.CurrentCandidate = Contests[CurrentContestIndex].Candidates[CurrentContest.CurrentCandidateIndex];
+                CurrentContest.CurrentCandidate = CurrentContest.Candidates[CurrentContest.CurrentCandidateIndex];
             }
         }
 
@@ -179,8 +179,27 @@ namespace Day17
             if (!CurrentContest.CurrentCandidate.IsFirstCandidate)
             {
                 CurrentContest.CurrentCandidateIndex--;
-                CurrentContest.CurrentCandidate = Contests[CurrentContestIndex].Candidates[CurrentContest.CurrentCandidateIndex];
+                CurrentContest.CurrentCandidate = CurrentContest.Candidates[CurrentContest.CurrentCandidateIndex];
             }
         }
+
+        public void SelectCandidate()
+        {
+            if (CurrentContest.NumOfVotes >= CurrentContest.VoteFor && !CurrentContest.CurrentCandidate.Selected)
+            {
+                Console.WriteLine("Overvote!");
+                return;
+            }
+            CurrentContest.CurrentCandidate.ToggleSelection();
+            if (CurrentContest.CurrentCandidate.Selected)
+            {
+                CurrentContest.NumOfVotes++;
+            }
+            if (!CurrentContest.CurrentCandidate.Selected)
+            {
+                CurrentContest.NumOfVotes--;
+            }
+        }
+        
     }
 }

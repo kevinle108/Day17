@@ -77,7 +77,7 @@ namespace Day17
                         ballot.GoToPrevCandidate();
                         break;
                     case '5':
-                        //ballot.SelectCandidate();
+                        ballot.SelectCandidate();
                         break;
                     case '6':
                         ballot.GoToNextCandidate();
