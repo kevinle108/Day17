@@ -54,7 +54,6 @@ namespace Day17
         static void Vote(Ballot ballot)
         {
             ballot.SetFirstLast();
-            Console.WriteLine();          
             char userInput;
             bool done = false;
             do

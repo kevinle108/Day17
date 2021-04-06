@@ -33,7 +33,7 @@ namespace Day17
 
         public void Output()
         {
-            Console.WriteLine("Demo Ballot");
+            Console.WriteLine("\nDemo Ballot");
             for (int i = 0; i < Contests.Count; i++)
             {
                 Console.WriteLine($"  Contest {i + 1} of {Contests.Count}: {Contests[i].Name} (Vote for {Contests[i].VoteFor})");
@@ -42,7 +42,6 @@ namespace Day17
                     Console.WriteLine($"    {Contests[i].Candidates[j].DisplayText()}");
                 }
             }
-            Console.WriteLine();
         }
 
         public void DisplayCurrentCandidate()
@@ -191,25 +190,29 @@ namespace Day17
             }
             CurrentContest.CurrentCandidate.ToggleSelection();
             if (CurrentContest.CurrentCandidate.Selected)
-            {
-                CurrentContest.NumOfVotes++;
+            {                
                 if (CurrentContest.CurrentCandidate.Name.Contains("Write-in:"))
                 {
                     Console.Write("\nEnter the writein name: ");
-                    string writeinName = Console.ReadLine();
+                    string writeinName = Console.ReadLine().Trim();
+                    if (writeinName == "") 
+                    {
+                        // invalid name -> deselect the writein and return
+                        CurrentContest.CurrentCandidate.ToggleSelection();
+                        return;                    
+                    }
                     CurrentContest.CurrentCandidate.Name = "Write-in: " + writeinName;
                 }
-
+                CurrentContest.NumOfVotes++;
             }
             if (!CurrentContest.CurrentCandidate.Selected)
             {
-                CurrentContest.NumOfVotes--;
                 if (CurrentContest.CurrentCandidate.Name.Contains("Write-in:"))
                 {
                     CurrentContest.CurrentCandidate.Name = "Write-in:";
                 }
+                CurrentContest.NumOfVotes--;
             }
-        }
-        
+        }        
     }
 }
