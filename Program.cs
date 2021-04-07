@@ -80,7 +80,11 @@ namespace Day17
                         ballot.GoToNextCandidate();
                         break;
                     case '8':
-                        if (ballot.CurrentContest.IsLastContest) done = true;
+                        if (ballot.CurrentContest.IsLastContest)
+                        {
+                            done = true;
+                            break;
+                        }
                         ballot.GoToNextContest();
                         break;
                     default:
@@ -88,6 +92,8 @@ namespace Day17
                         break;
                 }
             } while (!done);
+            Console.WriteLine("Here is your final ballot:");
+            ballot.Output();
             Console.WriteLine("\n...Program ended!");
         }
         
