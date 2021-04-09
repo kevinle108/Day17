@@ -6,16 +6,15 @@ namespace Day17
 {
     class Contest
     {
-        public string Code { get; private set; }        
-        public string Name { get; private set; }
-        public int VoteFor { get; private set; }
-        public List<Candidate> Candidates { get; private set; }
+        public string Code { get; }        
+        public string Name { get; }
+        public int VoteFor { get; }
+        public List<Candidate> Candidates { get; }
         public Candidate CurrentCandidate { get; set; }
         public int CurrentCandidateIndex { get; set; }
         public bool IsFirstContest { get; set; }
         public bool IsLastContest { get; set; }
         public int NumOfVotes { get; set; }
-
 
         public Contest(string code, string name, int voteFor)
         {

@@ -6,8 +6,8 @@ namespace Day17
 {
     class Ballot
     {
-        public string Name { get; private set; }
-        public List<Contest> Contests { get; private set; }
+        public string Name { get; }
+        public List<Contest> Contests { get; }
         public Contest CurrentContest { get; set; }
         public int CurrentContestIndex { get; set; }
         Dictionary<char, string> AllOptions = new Dictionary<char, string>() {
@@ -18,7 +18,6 @@ namespace Day17
             {'6', "6: Next Candidate" },
             {'8', "8: Next Contest" },
         };
-
 
         public Ballot(string name)
         {
