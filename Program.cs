@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 
 namespace Day17
 {
@@ -7,6 +9,53 @@ namespace Day17
     {
         static void Main(string[] args)
         {
+            string ballotFileName = "BALLOT_0001.json";
+            string contestFileName = "CONTEST_";
+
+            JsonElement contestCode;
+            string contestData;
+            JsonDocument contestDoc;
+            JsonElement contestRoot;
+            JsonElement contestName;
+            JsonElement contestMaxChoices;
+            JsonElement contestWriteIn;
+            JsonElement contestCandidates;
+
+
+            string ballotData = File.ReadAllText(ballotFileName);
+            JsonDocument ballotDoc = JsonDocument.Parse(ballotData);
+            JsonElement ballotRoot = ballotDoc.RootElement;
+            var contests = ballotRoot.GetProperty("Contests");
+            for (int i = 0; i < contests.GetArrayLength(); i++)
+            {
+                contestCode = contests[i].GetProperty("ContestCode");
+                contestData = File.ReadAllText(contestFileName + contestCode + ".json");
+                contestDoc = JsonDocument.Parse(contestData);
+                contestRoot = contestDoc.RootElement;
+                contestName = contestRoot.GetProperty("ContestName");
+                contestMaxChoices = contestRoot.GetProperty("MaxChoices");
+                contestWriteIn = contestRoot.GetProperty("WriteIn");
+                contestCandidates = contestRoot.GetProperty("Candidates");
+                Console.WriteLine($"ContestCode: {contestCode}");
+                Console.WriteLine($"ContestName: {contestName}");
+                Console.WriteLine($"MaxChoices: {contestMaxChoices}");
+                Console.WriteLine($"ContestWriteIn: {contestWriteIn}");
+                Console.WriteLine($"ContestCandidates: {contestCandidates.GetArrayLength()}");
+                Console.WriteLine();
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+            return;
             var ballot = new Ballot("Demo Ballot");
             Contest contest;
 
