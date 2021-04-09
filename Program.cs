@@ -10,10 +10,7 @@ namespace Day17
         static void Main(string[] args)
         {
             string ballotFileName = "BALLOT_0001.json";
-            string contestFileName = "CONTEST_";
-
-            Ballot ballot = new Ballot("Demo Ballot");
-
+            
             string contestCode;
             string contestData;
             JsonDocument contestDoc;
@@ -23,7 +20,7 @@ namespace Day17
             bool contestWriteIn;
             JsonElement contestCandidates;
             Contest contest;
-
+            
             string candidateCode;
             string candidateName;
             string candidateParty;
@@ -32,13 +29,15 @@ namespace Day17
             string ballotData = File.ReadAllText(ballotFileName);
             JsonDocument ballotDoc = JsonDocument.Parse(ballotData);
             JsonElement ballotRoot = ballotDoc.RootElement;
-            var contests = ballotRoot.GetProperty("Contests");
+            string ballotName = ballotRoot.GetProperty("BallotName").ToString();
+            JsonElement contests = ballotRoot.GetProperty("Contests");
+            Ballot ballot = new Ballot(ballotName);
 
-            // for each contest
+            // for each contest in ballot
             for (int i = 0; i < contests.GetArrayLength(); i++)
             {
                 contestCode = contests[i].GetProperty("ContestCode").ToString();
-                contestData = File.ReadAllText(contestFileName + contestCode + ".json");
+                contestData = File.ReadAllText("CONTEST_" + contestCode + ".json");
                 contestDoc = JsonDocument.Parse(contestData);
                 contestRoot = contestDoc.RootElement;
                 contestName = contestRoot.GetProperty("ContestName").GetString();
@@ -52,7 +51,7 @@ namespace Day17
                 //Console.WriteLine($"ContestCandidates: {contestCandidates}");                
                 contest = new Contest(contestCode, contestName, contestMaxChoices);
 
-                // for each candidate 
+                // for each candidate in contest
                 for (int j = 0; j < contestCandidates.GetArrayLength(); j++)
                 {
                     candidateCode = contestCandidates[j].GetProperty("CandidateCode").GetString();
@@ -70,16 +69,6 @@ namespace Day17
 
                 ballot.AddContest(contest);
             }
-
-
-
-
-
-
-
-
-
-
 
             //var ballot = new Ballot("Demo Ballot");
 

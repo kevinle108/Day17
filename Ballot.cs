@@ -44,7 +44,7 @@ namespace Day17
 
         public void Output()
         {
-            Console.WriteLine("\nDemo Ballot");
+            Console.WriteLine(Name);
             for (int i = 0; i < Contests.Count; i++)
             {
                 Console.WriteLine($"  Contest {i + 1} of {Contests.Count}: {Contests[i].Name} (Vote for {Contests[i].VoteFor})");
