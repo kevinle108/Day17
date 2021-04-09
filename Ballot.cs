@@ -6,11 +6,23 @@ namespace Day17
 {
     class Ballot
     {
-        public string Name { get; private set; }
-        public List<Contest> Contests { get; private set; }
-        public Contest CurrentContest { get; set; }
-        public int CurrentContestIndex { get; set; }
-        Dictionary<char, string> AllOptions = new Dictionary<char, string>() {
+        private int _currentContestIndex;
+        private Contest _currentContest;
+
+        public string Name { get; }
+        public List<Contest> Contests { get; }
+        public Contest CurrentContest { get { return _currentContest; } }
+        public int CurrentContestIndex 
+        {
+            get { return _currentContestIndex; }                                        
+            private set
+            {
+                _currentContestIndex = value;
+                _currentContest = Contests[_currentContestIndex];
+            }
+        }
+        readonly Dictionary<char, string> AllOptions = new Dictionary<char, string>() 
+        {
             {'0', "0: Display Ballot" },
             {'2', "2: Prev Contest" },
             {'4', "4: Prev Candidate" },
@@ -18,7 +30,6 @@ namespace Day17
             {'6', "6: Next Candidate" },
             {'8', "8: Next Contest" },
         };
-
 
         public Ballot(string name)
         {
@@ -52,15 +63,12 @@ namespace Day17
         // sets the all the current contest and candidate indexes to begin voting 
         public void PrepForVoting()
         {
-            CurrentContest = Contests[0];
             CurrentContestIndex = 0;
             Contests[0].IsFirstContest = true;
             Contests[^1].IsLastContest = true;
             foreach (var contest in Contests)
             {
                 contest.CurrentCandidateIndex = 0;
-                contest.Candidates[0].IsFirstCandidate = true;
-                contest.Candidates[^1].IsLastCandidate = true;
             }
         }
         
@@ -80,11 +88,11 @@ namespace Day17
             {
                 options.RemoveAll(x => x == '2');                
             }
-            if (CurrentContest.CurrentCandidate.IsFirstCandidate)
+            if (CurrentContest.IsCurrentCandidateFirst)
             {
                 options.RemoveAll(x => x == '4');
             }
-            if (CurrentContest.CurrentCandidate.IsLastCandidate)
+            if (CurrentContest.IsCurrentCandidateLast)
             {
                 options.RemoveAll(x => x == '6');
             }
@@ -110,46 +118,40 @@ namespace Day17
             // return the list of valid options
             return options;
         }
+        public void GoToPrevContest()
+        {
+            if (!CurrentContest.IsFirstContest)
+            {
+                CurrentContestIndex--;
+                CurrentContest.CurrentCandidateIndex = 0;
+            }
+        }
 
         public void GoToNextContest()
         {
             if (!CurrentContest.IsLastContest)
             {
                 CurrentContestIndex++;
-                CurrentContest = Contests[CurrentContestIndex];
                 CurrentContest.CurrentCandidateIndex = 0;
-                CurrentContest.CurrentCandidate = CurrentContest.Candidates[CurrentContest.CurrentCandidateIndex];
+            }
+        }
+        public void GoToPrevCandidate()
+        {
+            if (!CurrentContest.IsCurrentCandidateFirst)
+            {
+                CurrentContest.CurrentCandidateIndex--;
             }
         }
         
         public void GoToNextCandidate()
         {
-            if (!CurrentContest.CurrentCandidate.IsLastCandidate)
+            if (!CurrentContest.IsCurrentCandidateLast)
             {
                 CurrentContest.CurrentCandidateIndex++;
-                CurrentContest.CurrentCandidate = CurrentContest.Candidates[CurrentContest.CurrentCandidateIndex];
             }
         }
 
-        public void GoToPrevContest()
-        {
-            if (!CurrentContest.IsFirstContest)
-            {
-                CurrentContestIndex--;
-                CurrentContest = Contests[CurrentContestIndex];
-                CurrentContest.CurrentCandidateIndex = 0;
-                CurrentContest.CurrentCandidate = CurrentContest.Candidates[CurrentContest.CurrentCandidateIndex];
-            }
-        }
 
-        public void GoToPrevCandidate()
-        {
-            if (!CurrentContest.CurrentCandidate.IsFirstCandidate)
-            {
-                CurrentContest.CurrentCandidateIndex--;
-                CurrentContest.CurrentCandidate = CurrentContest.Candidates[CurrentContest.CurrentCandidateIndex];
-            }
-        }
 
         public void SelectCandidate()
         {

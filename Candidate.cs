@@ -7,12 +7,10 @@ namespace Day17
     public class Candidate
     {
 
-        public string Code { get; private set; }
+        public string Code { get; }
         public string Name { get; set; }
-        public string Party { get; private set; }
-        public bool Selected { get; private set; }
-        public bool IsFirstCandidate { get; set; }
-        public bool IsLastCandidate { get; set; }
+        public string Party { get; }
+        public bool Selected { get; private set;}
 
         public Candidate(string code, string name, string party)
         {
@@ -20,8 +18,6 @@ namespace Day17
             Name = name;
             Party = party;
             Selected = false;
-            IsFirstCandidate = false;
-            IsLastCandidate = false;
         }
 
         public string DisplayText()

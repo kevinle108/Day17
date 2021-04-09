@@ -95,9 +95,7 @@ namespace Day17
             Console.WriteLine("Here is your final ballot:");
             ballot.Output();
             Console.WriteLine("\n...Program ended!");
-        }
-        
-
+        }        
     }
 
     
