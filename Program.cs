@@ -9,7 +9,7 @@ namespace Day17
     {
         static void Main(string[] args)
         {
-            string ballotFileName = "BALLOT_0001.json";
+            string ballotFileName = "BALLOT_0002.json";
             
             string contestCode;
             string contestData;
@@ -26,6 +26,10 @@ namespace Day17
             string candidateParty;
             Candidate candidate;
 
+            Dictionary<string, Candidate> candidatesTable;
+            List<string> candidatesOrder;
+
+            // access the ballot json file 
             string ballotData = File.ReadAllText(ballotFileName);
             JsonDocument ballotDoc = JsonDocument.Parse(ballotData);
             JsonElement ballotRoot = ballotDoc.RootElement;
@@ -36,6 +40,18 @@ namespace Day17
             // for each contest in ballot
             for (int i = 0; i < contests.GetArrayLength(); i++)
             {
+                // get the order of candidate codes
+                JsonElement order = contests[i].GetProperty("CandidateCodes");
+                candidatesOrder = new List<string>();
+                for (int orderIndex = 0; orderIndex < order.GetArrayLength(); orderIndex++)
+                {
+                    candidatesOrder.Add(order[orderIndex].GetString());
+                }
+
+                // begin new candidatesTable
+                candidatesTable = new Dictionary<string, Candidate>();
+
+                // access the contest json file to get all candidate information
                 contestCode = contests[i].GetProperty("ContestCode").ToString();
                 contestData = File.ReadAllText("CONTEST_" + contestCode + ".json");
                 contestDoc = JsonDocument.Parse(contestData);
@@ -43,12 +59,7 @@ namespace Day17
                 contestName = contestRoot.GetProperty("ContestName").GetString();
                 contestRoot.GetProperty("MaxChoices").TryGetInt32(out contestMaxChoices);
                 contestWriteIn = contestRoot.GetProperty("WriteIn").GetBoolean();
-                contestCandidates = contestRoot.GetProperty("Candidates");
-                //Console.WriteLine($"ContestCode: {contestCode}");
-                //Console.WriteLine($"ContestName: {contestName}");
-                //Console.WriteLine($"MaxChoices: {contestMaxChoices}");
-                //Console.WriteLine($"ContestWriteIn: {contestWriteIn}");
-                //Console.WriteLine($"ContestCandidates: {contestCandidates}");                
+                contestCandidates = contestRoot.GetProperty("Candidates");             
                 contest = new Contest(contestCode, contestName, contestMaxChoices);
 
                 // for each candidate in contest
@@ -57,11 +68,17 @@ namespace Day17
                     candidateCode = contestCandidates[j].GetProperty("CandidateCode").GetString();
                     candidateName = contestCandidates[j].GetProperty("CandidateName").GetString();
                     candidateParty = contestCandidates[j].GetProperty("CandidateParty").GetString();
-                    //Console.WriteLine($"CandidateCode: {candidateCode}");
-                    //Console.WriteLine($"CandidateName: {candidateName}");
-                    //Console.WriteLine($"CandidateParty: {candidateParty}");
                     candidate = new Candidate(candidateCode, candidateName, candidateParty);
-                    contest.AddCandidate(candidate);
+                    //contest.AddCandidate(candidate);
+
+                    // add candidate and its candidateCode to candidatesTable
+                    candidatesTable.Add(candidateCode, candidate);
+                }
+
+                // add candidates in the correct order
+                foreach (string candCode in candidatesOrder)
+                {
+                    contest.AddCandidate(candidatesTable[candCode]);
                 }
 
                 // add writeins if appropriate
