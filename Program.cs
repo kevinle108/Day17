@@ -9,8 +9,13 @@ namespace Day17
     {
         static void Main(string[] args)
         {
-            string ballotFileName = "BALLOT_0002.json";
-            
+            Ballot ballot = BuildBallotFromJson("BALLOT_0002.json");          
+            ballot.Output();
+            Vote(ballot);
+        }
+
+        static Ballot BuildBallotFromJson(string fileName)
+        {
             string contestCode;
             string contestData;
             JsonDocument contestDoc;
@@ -20,7 +25,7 @@ namespace Day17
             bool contestWriteIn;
             JsonElement contestCandidates;
             Contest contest;
-            
+
             string candidateCode;
             string candidateName;
             string candidateParty;
@@ -30,7 +35,7 @@ namespace Day17
             List<string> candidatesOrder;
 
             // access the ballot json file 
-            string ballotData = File.ReadAllText(ballotFileName);
+            string ballotData = File.ReadAllText(fileName);
             JsonDocument ballotDoc = JsonDocument.Parse(ballotData);
             JsonElement ballotRoot = ballotDoc.RootElement;
             string ballotName = ballotRoot.GetProperty("BallotName").ToString();
@@ -59,7 +64,7 @@ namespace Day17
                 contestName = contestRoot.GetProperty("ContestName").GetString();
                 contestRoot.GetProperty("MaxChoices").TryGetInt32(out contestMaxChoices);
                 contestWriteIn = contestRoot.GetProperty("WriteIn").GetBoolean();
-                contestCandidates = contestRoot.GetProperty("Candidates");             
+                contestCandidates = contestRoot.GetProperty("Candidates");
                 contest = new Contest(contestCode, contestName, contestMaxChoices);
 
                 // for each candidate in contest
@@ -86,46 +91,7 @@ namespace Day17
 
                 ballot.AddContest(contest);
             }
-
-            //var ballot = new Ballot("Demo Ballot");
-
-            //contest = new Contest("BF", "Board of Finance", 4);
-            //contest.AddCandidate(new Candidate("RUTH", "Babe Ruth", "REP"));
-            //contest.AddCandidate(new Candidate("THORPE", "Jim Thorpe", "REP"));
-            //contest.AddCandidate(new Candidate("MARAVICH", "Pete Maravich", "REP"));
-            //contest.AddCandidate(new Candidate("ROBINSON", "Jackie Robinson", "REP"));
-            //contest.AddCandidate(new Candidate("COOLIDGE", "Calvin Coolidge", "DEM"));
-            //contest.AddCandidate(new Candidate("KENNEDY", "John F. Kennedy", "DEM"));
-            //contest.AddBlankWriteIns();
-            //ballot.AddContest(contest);
-
-            //contest = new Contest("BE", "Board of Education", 3);
-            //contest.AddCandidate(new Candidate("JONES", "Bobby Jones", "REP"));
-            //contest.AddCandidate(new Candidate("RUDOLPH", "Wilma Rudolph", "REP"));
-            //contest.AddCandidate(new Candidate("WALKER", "Jimmy Walker", "DEM"));
-            //contest.AddCandidate(new Candidate("DALEY", "Richard Daley", "DEM"));
-            //contest.AddCandidate(new Candidate("CHARLES", "Ray Charles", "PET"));
-            //contest.AddCandidate(new Candidate("DISNEY", "Walt Disney", "PET"));
-            //contest.AddCandidate(new Candidate("LINCOLN", "Abraham Lincoln", "PET"));
-            //contest.AddBlankWriteIns();
-            //ballot.AddContest(contest);
-
-            //contest = new Contest("BA", "Board of Assessment Appeals", 1);
-            //contest.AddCandidate(new Candidate("MARCIANO", "Rocky Marciano", "REP"));
-            //contest.AddBlankWriteIns();
-            //ballot.AddContest(contest);
-
-            //contest = new Contest("PZ", "Planning and Zoning Commission", 4);
-            //contest.AddCandidate(new Candidate("WASHINGTON", "George Washington", "REP"));
-            //contest.AddCandidate(new Candidate("BARTON", "Clara Barton", "REP"));
-            //contest.AddCandidate(new Candidate("ASH", "Arthur Ash", "REP"));
-            //contest.AddCandidate(new Candidate("PIERCE", "Arthur Pierce", "REP"));
-            //contest.AddCandidate(new Candidate("FRANKLIN-DEM", "Benjamin Franklin", "DEM"));
-            //contest.AddCandidate(new Candidate("FRANKLIN-SAN", "Benjamin Franklin", "SNA"));
-            //contest.AddBlankWriteIns();
-            //ballot.AddContest(contest);
-            ballot.Output();
-            Vote(ballot);
+            return ballot;
         }
 
         static void Vote(Ballot ballot)
