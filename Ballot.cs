@@ -57,7 +57,11 @@ namespace Day17
 
         public void DisplayCurrentCandidate()
         {
-            Console.WriteLine($"\n{CurrentContest.Name} - {CurrentContest.CurrentCandidate.DisplayText()}");
+            string txt = $"\n{CurrentContest.Name} - ";
+            if (CurrentContest.CurrentCandidate.IsWriteIn) txt += $"(Write-in) {CurrentContest.CurrentCandidate.Name}";
+            else txt += $"{CurrentContest.CurrentCandidate.Name} ({CurrentContest.CurrentCandidate.Party})";
+            if (CurrentContest.CurrentCandidate.Selected) txt += " (Selected)";
+            Console.WriteLine(txt);
         }       
 
         // sets the all the current contest and candidate indexes to begin voting 
@@ -163,9 +167,9 @@ namespace Day17
             CurrentContest.CurrentCandidate.ToggleSelection();
             if (CurrentContest.CurrentCandidate.Selected)
             {                
-                if (CurrentContest.CurrentCandidate.Name.Contains("Write-in:"))
+                if (CurrentContest.CurrentCandidate.IsWriteIn)
                 {
-                    Console.Write("\nEnter the writein name: ");
+                    Console.Write("Enter the writein name: ");
                     string writeinName = Console.ReadLine().Trim();
                     if (writeinName == "") 
                     {
@@ -173,15 +177,15 @@ namespace Day17
                         CurrentContest.CurrentCandidate.ToggleSelection();
                         return;                    
                     }
-                    CurrentContest.CurrentCandidate.Name = "Write-in: " + writeinName;
+                    CurrentContest.CurrentCandidate.Name = writeinName;
                 }
                 CurrentContest.NumOfVotes++;
             }
             if (!CurrentContest.CurrentCandidate.Selected)
             {
-                if (CurrentContest.CurrentCandidate.Name.Contains("Write-in:"))
+                if (CurrentContest.CurrentCandidate.IsWriteIn)
                 {
-                    CurrentContest.CurrentCandidate.Name = "Write-in:";
+                    CurrentContest.CurrentCandidate.Name = "";
                 }
                 CurrentContest.NumOfVotes--;
             }

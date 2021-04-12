@@ -49,7 +49,7 @@ namespace Day17
         {
             for (int i = 0; i < VoteFor; i++)
             {
-                Candidates.Add(new Candidate($"Writein-{i}", "Write-in:", ""));
+                Candidates.Add(new Candidate("writein"));
             }            
         }
 

@@ -10,7 +10,8 @@ namespace Day17
         public string Code { get; }
         public string Name { get; set; }
         public string Party { get; }
-        public bool Selected { get; private set;}
+        public bool Selected { get; private set; }
+        public bool IsWriteIn { get; }
 
         public Candidate(string code, string name, string party)
         {
@@ -20,12 +21,28 @@ namespace Day17
             Selected = false;
         }
 
+        // constructor used for writeins
+        public Candidate(string candType)
+        {
+            if (candType == "writein") {
+                Code = "";
+                Name = "";
+                Party = "";
+                Selected = false;
+                IsWriteIn = true;
+            }            
+        }
+
         public string DisplayText()
         {
-            string txt = $"{Name}";
-            if (!Name.Contains("Write-in:"))
+            string txt = "";
+            if (IsWriteIn)
             {
-                txt += $" ({Party})";
+                txt += $"Write-in: {Name}";
+            }
+            else
+            {
+                txt += $"{Name} ({Party})";
             }
             if (Selected)
             {
